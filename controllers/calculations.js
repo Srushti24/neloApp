@@ -1,13 +1,11 @@
 const person_info = require('./person_info');
-
 //helps in filtering out only those retaurants that meets the  dietry criteria of the group
 function calculator(preference, restaurant_id, temp1, start, end, x, y) {
     console.log("start");
     console.log("temp is" + temp1);
     var arr = [];
     var restaurant_criteria = [];
-    //console.log(preference);
-    //console.log(restaurant_id);
+   
     for (var i = 0; i < preference.length; i++)
     {
         arr.push(preference[i] + "-" + "friendly");
@@ -17,6 +15,7 @@ function calculator(preference, restaurant_id, temp1, start, end, x, y) {
     {
         var temp = restaurant_id[j].preference.split(" ");
         if (checkCriteria_two(arr, temp) === true) {
+
             restaurant_criteria.push(restaurant_id[i]);
         }
     }
@@ -48,7 +47,23 @@ function find_dist(x, y, restaurant_criteria,temp1,start,end) {
     }
    // console.log("index is " + index);
    // console.log("temp is" + temp);
-    make_booking(temp1, restaurant_criteria[index].id,start,end);
+    var a;
+    var value;
+    if (temp1.length > 4 && temp1.length <= 6) {
+        a = "six";
+        value = restaurant_criteria[index].no_of_six;
+    }
+    else if (temp1.length > 2 && temp1.length <= 4) {
+        a = "four";
+        value = restaurant_criteria[index].no_of_four;
+    }
+    else {
+        a = "two";
+        value = restaurant_criteria[index].no_of_two;
+    }
+  //  console.log("a is" + a);
+    //console.log("value is" + value);
+    make_booking(temp1, restaurant_criteria[index].id,a,value,start,end);
 
 }
 
@@ -56,15 +71,19 @@ var relation_id = 0;
 
 
 //make the booking
-async function make_booking(temp1, number, start, end) {
+async function make_booking(temp1, number,a,value, start, end) {
     relation_id++;
-    console.log("over here");
-    console.log("temp is" + temp1);
+    //console.log("over here");
+    //console.log("temp is" + temp1);
+    //console.log("a is" + a);
+    //console.log("value is" + value);
     for (var t = 0; t < temp1.length; t++) {
         let sql1 = `INSERT INTO Restaurant_relation(restaurant_id,start,end,relation_id,person_id) VALUES (${number},${start},${end},${relation_id},${temp1[t]})`;
         var row3 = await person_info.helper(sql1, temp1, start, end, "");
     }
-    console.log("booking completed");
+   
+    let sql2 = `UPDATE RESTAURANT SET no_of_${a} =${value-1} WHERE id=${number}`;
+    var row3 = await person_info.helper(sql2, temp1, start, end, "");
 }
 
 
