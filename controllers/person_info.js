@@ -86,7 +86,7 @@ function helper(sql,temp, start, end, s) {
 
 //First i check if any of those people have a reservation which conflicts with the new reservation
 //If thats the case no need for any calculations
- function check_if_present(temp, start, end) {
+function check_if_present(temp, start, end) {
     var s = temp.join(",");
     let sql = `SELECT * FROM Restaurant_relation WHERE start BETWEEN ${start - 2} AND ${start + 2} AND end BETWEEN ${end - 2} AND ${end + 2} AND person_id IN ( ${s})`;
     console.log("sql is" + sql);
@@ -110,38 +110,21 @@ function helper(sql,temp, start, end, s) {
 
 }
 
-function book_seat(temp,restaurant_id,start,end) {
-    var placeholder = counter+","+restaurant_id + "," + start + "," + end;
-    let sql = `INSERT INTO Restaurant_relation(id,Restaurant_id,start,end) VALUES (` +placeholder `+)`;
 
-    // output the INSERT statement
-    console.log(sql);
+//delete a particular booking
 
-    db.run(sql, languages, function (err) {
-        if (err) {
-            return console.error(err.message);
-        }
-        else {
+async function delete_booking(temp1, id) {
 
-            let sql = `INSERT INTO Restaurant_relation_details(relation_id,person_id) VALUES (` + counter`+)`;
-
-            // output the INSERT statement
-            console.log(sql);
-
-            db.run(sql, languages, function (err) {
-                if (err) {
-                    return console.error(err.message);
-                }
-                else {
-                }
-            });
-        }
-    });
-
+   
+    for (var t = 0; t < temp1.length; t++) {
+        let sql1 = `DELETE FROM Restaurant_relation WHERE relation_id=${id} AND person_id = ${temp1[t]}`;
+        var row3 = await helper(sql1, temp1);
+    }
 }
 
 
 exports.parent = parent;
 exports.check_if_present = check_if_present;
-
+exports.helper = helper;
+exports.delete_booking = delete_booking;
 

@@ -19,11 +19,6 @@ app.get("/", (req, res) => {
 
 
 
-app.get("/api/al", (req, res) => {
-
-    //person_info.check_if_present(temp,8,10);
-});
-
 
     app.post("/api", function(req, res){
         var temp = req.body.id;
@@ -36,4 +31,16 @@ app.get("/api/al", (req, res) => {
         res.json("hello world");
 });
 
-app.delete("/api")
+app.delete("/api/delete", function (req, res) {
+    var temp = req.body.id;
+    var value = req.body.value;
+    //console.log(property)
+
+    console.log(temp);
+    console.log(value);
+    // person_info.check_if_present(temp, start, start+2);
+    person_info.delete_booking([1,2,3], 1);
+    res.json("hello world");
+});
+
+
