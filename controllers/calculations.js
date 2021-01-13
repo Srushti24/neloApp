@@ -1,8 +1,6 @@
 const person_info = require('./person_info');
 //helps in filtering out only those retaurants that meets the  dietry criteria of the group
 function calculator(preference, restaurant_id, temp1, start, end, x, y) {
-    console.log("start");
-    console.log("temp is" + temp1);
     var arr = [];
     var restaurant_criteria = [];
    
@@ -23,7 +21,6 @@ function calculator(preference, restaurant_id, temp1, start, end, x, y) {
         console.log("No such restaurant present which meets the groups requirements");
     }
     else {
-       // console.log("temp is" + temp);
         find_dist(x, y, restaurant_criteria,temp1,start,end);
     }
    
@@ -73,10 +70,6 @@ var relation_id = 0;
 //make the booking
 async function make_booking(temp1, number,a,value, start, end) {
     relation_id++;
-    //console.log("over here");
-    //console.log("temp is" + temp1);
-    //console.log("a is" + a);
-    //console.log("value is" + value);
     for (var t = 0; t < temp1.length; t++) {
         let sql1 = `INSERT INTO Restaurant_relation(restaurant_id,start,end,relation_id,person_id) VALUES (${number},${start},${end},${relation_id},${temp1[t]})`;
         var row3 = await person_info.helper(sql1, temp1, start, end, "");

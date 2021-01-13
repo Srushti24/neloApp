@@ -84,12 +84,12 @@ function helper(sql,temp, start, end, s) {
     });
 }
 
-//First i check if any of those people have a reservation which conflicts with the new reservation
+//First  check if any of those people have a reservation which conflicts with the new reservation
 //If thats the case no need for any calculations
 function check_if_present(temp, start, end) {
     var s = temp.join(",");
     let sql = `SELECT * FROM Restaurant_relation WHERE start BETWEEN ${start - 2} AND ${start + 2} AND end BETWEEN ${end - 2} AND ${end + 2} AND person_id IN ( ${s})`;
-    console.log("sql is" + sql);
+    //console.log("sql is" + sql);
      db.all(sql, [], (err, rows) => {
         if (err) {
             console.log(err);
